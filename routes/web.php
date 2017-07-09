@@ -20,3 +20,13 @@ Route::get('notificaciones-push',[
     'as' => 'notificacion',
     'uses' => 'PushController@index',
 ]);
+
+Route::get('notificaciones-push/multiple',[
+    'as' => 'multiple_device',
+    'uses' => 'PushController@multiple_device',
+]);
+
+Route::get('notificaciones-push/notificacion',[
+    'as' => 'notificacion',
+    'uses' => 'PushController@notificacion',
+]);

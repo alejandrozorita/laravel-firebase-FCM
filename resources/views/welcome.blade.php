@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="manifest" href="http://localhost:8888/php/laravel-firebase-FCM/public/manifest.json">
 
         <title>Laravel</title>
 
@@ -91,5 +92,54 @@
                 </div>
             </div>
         </div>
+
+        <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase-messaging.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyBb1O_ROm6bjc5DLj_K69WAdSOZIy9Ez7Y",
+                authDomain: "medssocial-web.firebaseapp.com",
+                databaseURL: "https://medssocial-web.firebaseio.com",
+                projectId: "medssocial-web",
+                storageBucket: "medssocial-web.appspot.com",
+                messagingSenderId: "610391124341"
+            };
+            firebase.initializeApp(config);
+            const messaging = firebase.messaging();
+
+            messaging.requestPermission()
+                .then(function() {
+                    console.log('Notification permission granted.');
+                    // TODO(developer): Retrieve an Instance ID token for use with FCM.
+                    // ...
+                })
+                .catch(function(err) {
+                    console.log('Unable to get permission to notify.', err);
+                });
+
+            messaging.getToken()
+                .then(function(currentToken) {
+                    if (currentToken) {
+                        sendTokenToServer(currentToken);
+                        updateUIForPushEnabled(currentToken);
+                    } else {
+                        // Show permission request.
+                        console.log('No Instance ID token available. Request permission to generate one.');
+                        // Show permission UI.
+                        updateUIForPushPermissionRequired();
+                        setTokenSentToServer(false);
+                    }
+                })
+                .catch(function(err) {
+                    console.log('An error occurred while retrieving token. ', err);
+                    showToken('Error retrieving Instance ID token. ', err);
+                    setTokenSentToServer(false);
+                });
+
+        </script>
     </body>
 </html>
