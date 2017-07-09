@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('notificaciones-push',[
+    'as' => 'notificacion',
+    'uses' => 'PushController@index',
+]);
